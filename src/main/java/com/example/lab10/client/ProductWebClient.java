@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 /**
  * ProductWebClient — Reactive HTTP Client
  *
@@ -27,13 +26,9 @@ public class ProductWebClient {
     private final WebClient client = WebClient.create("http://localhost:8080");
 
     // ══════════════════════════════════════════════════════
-    // ✅ ตัวอย่างที่ทำเสร็จแล้ว — ศึกษาแล้วทำ method ที่เหลือ
+    // ✅ ตัวอย่างที่ทำเสร็จแล้ว
     // ══════════════════════════════════════════════════════
 
-    /**
-     * GET /products/{id} → Mono<Product>
-     * ดึง Product 1 รายการจาก server
-     */
     public Mono<Product> getProductById(String id) {
         return client.get()
                 .uri("/products/{id}", id)
@@ -42,79 +37,43 @@ public class ProductWebClient {
     }
 
     // ══════════════════════════════════════════════════════
-    // ❌ TODO: เติม method body ด้านล่างนี้
+    // ✅ TODO ที่เติมแล้ว
     // ══════════════════════════════════════════════════════
 
-    /**
-     * GET /products → Flux<Product>
-     * TODO: ดึง Product ทั้งหมดจาก server
-     *
-     * Hint: client.get()
-     *         .uri("/products")
-     *         .retrieve()
-     *         .bodyToFlux(Product.class)
-     */
     public Flux<Product> getAllProducts() {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return client.get()
+                .uri("/products")
+                .retrieve()
+                .bodyToFlux(Product.class);
     }
 
-    /**
-     * POST /products → Mono<Product>
-     * TODO: ส่ง Product ใหม่ไปยัง server
-     *
-     * Hint: client.post()
-     *         .uri("/products")
-     *         .bodyValue(product)   ← ส่ง body
-     *         .retrieve()
-     *         .bodyToMono(Product.class)
-     */
     public Mono<Product> createProduct(Product product) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return client.post()
+                .uri("/products")
+                .bodyValue(product)
+                .retrieve()
+                .bodyToMono(Product.class);
     }
 
-    /**
-     * DELETE /products/{id} → Mono<Void>
-     * TODO: ส่ง request ลบ Product
-     *
-     * Hint: client.delete()
-     *         .uri("/products/{id}", id)
-     *         .retrieve()
-     *         .bodyToMono(Void.class)
-     */
     public Mono<Void> deleteProduct(String id) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return client.delete()
+                .uri("/products/{id}", id)
+                .retrieve()
+                .bodyToMono(Void.class);
     }
 
-    /**
-     * GET /products/category/{category} → Flux<Product>
-     * TODO: ดึง Product ตาม category
-     *
-     * Hint: client.get()
-     *         .uri("/products/category/{category}", category)
-     *         .retrieve()
-     *         .bodyToFlux(Product.class)
-     */
     public Flux<Product> getByCategory(String category) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return client.get()
+                .uri("/products/category/{category}", category)
+                .retrieve()
+                .bodyToFlux(Product.class);
     }
 
-    /**
-     * GET /products/{id}/price → Mono<Double>
-     * TODO: ดึงราคาหลังส่วนลด
-     *       แล้ว chain .doOnNext() เพื่อ log ราคาที่ได้
-     *
-     * Hint: client.get()
-     *         .uri("/products/{id}/price", id)
-     *         .retrieve()
-     *         .bodyToMono(Double.class)
-     *         .doOnNext(price -> System.out.println("Price: " + price))
-     */
     public Mono<Double> getDiscountedPrice(String id) {
-        // TODO: เติม code ตรงนี้
-        return null; // ← แก้บรรทัดนี้
+        return client.get()
+                .uri("/products/{id}/price", id)
+                .retrieve()
+                .bodyToMono(Double.class)
+                .doOnNext(price -> System.out.println("Price: " + price));
     }
 }
